@@ -1,5 +1,7 @@
 <?php
 
 return array(
-    // Module resources config
+    'ManiplePages_Repository_PageRepository' => array(
+        'class' => 'ManiplePages_Repository_PageRepository',
+    ),
 );

@@ -1,1 +1,42 @@
-<h1>PagesController::indexAction works!</h1>
+<header>
+    <style>
+        .breadcrumb {
+            background: none;
+            padding: 8px 0;
+        }
+    </style>
+    <ol class="breadcrumb">
+        <li><a href="{{ baseUrl() }}">Start</a></li>
+        <li class="active">Pages</li>
+    </ol>
+</header>
+<main>
+    <h1>{{ translate('Pages') }}</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>{{ translate('Title') }}</th>
+            <th>{{ translate('Author') }}</th>
+            <th>{{ translate('Modified') }}</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for page in pages %}
+            <tr>
+                <td>{{ page.title }}</td>
+                <td>{{ userFullName(page.Author) }}</td>
+                <td>{{ page.updated_at | date('Y-m-d H:i') }}</td>
+                <td>
+                    {#
+                    <a href="{{ url('maniple-user.users.edit', { user_id: user.id }) }}{% if returnUrl %}?return_url={{ returnUrl | url_encode }}{% endif %}" class="btn-edit" title="{{ translate('Edit') }}">
+                        <i class="fa fa-pencil"></i>
+                    </a>
+                    #}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</main>
