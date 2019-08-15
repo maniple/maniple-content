@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @property Zend_View_Abstract $view
+ * @property Zend_View_Abstract|Zefram_View_Interface $view
  * @property Zend_Controller_Request_Http $_request
  */
 class ManiplePages_PagesController extends Maniple_Controller_Action
@@ -30,7 +30,7 @@ class ManiplePages_PagesController extends Maniple_Controller_Action
             throw new Maniple_Controller_Exception_NotAllowed();
         }
 
-        $pages = $this->_pageRepository->getPages(array(
+        $pages = $this->_pageRepository->getPagesOfType('page', array(
             'page'     => $this->getScalarParam('page'),
             'pageSize' => $this->getScalarParam('pageSize'),
         ));
@@ -43,7 +43,7 @@ class ManiplePages_PagesController extends Maniple_Controller_Action
     public function viewAction()
     {
         $pageId = (int) $this->getScalarParam('page_id');
-        $page = $this->_pageRepository->getPage($pageId);
+        $page = $this->_pageRepository->getContentOfType('page', $pageId);
 
         if (!$page) {
             throw new Maniple_Controller_Exception_NotFound($this->view->translate('Page not found'));
@@ -52,6 +52,11 @@ class ManiplePages_PagesController extends Maniple_Controller_Action
         if (!$page->isPublished() && !$this->_securityContext->isAllowed('manage_pages')) {
             throw new Maniple_Controller_Exception_NotAllowed();
         }
+
+        $this->view->headLink()->append(array(
+            'rel'  => 'canonical',
+            'href' => $this->view->serverUrl($this->view->baseUrl($page->slug)),
+        ));
 
         $this->view->assign(array(
             'title'   => $page->title,

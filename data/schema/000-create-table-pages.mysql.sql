@@ -6,8 +6,6 @@ CREATE TABLE pages (
 
     page_type               VARCHAR(32) NOT NULL,
 
-    created_by              INT,
-
     created_at              INT NOT NULL,
 
     updated_at              INT NOT NULL,
@@ -24,8 +22,6 @@ CREATE TABLE pages (
 
     slug                    VARCHAR(191) NOT NULL UNIQUE,
 
-    INDEX pages_page_type_deleted_at_idx (page_type, deleted_at),
-
-    FOREIGN KEY pages_created_by_fkey (created_by) REFERENCES users (user_id)
+    INDEX pages_page_type_deleted_at_idx (page_type, deleted_at)
 
 ) ENGINE=InnoDB CHARACTER SET utf8mb4;

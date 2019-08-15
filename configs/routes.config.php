@@ -9,6 +9,14 @@ return array(
             'action'     => 'index',
         ),
     ),
+    'maniple-pages.pages.create' => array(
+        'route'    => 'pages/create',
+        'defaults' => array(
+            'module'     => 'maniple-pages',
+            'controller' => 'pages',
+            'action'     => 'create',
+        ),
+    ),
     'maniple-pages.pages.view' => array(
         'route'    => 'pages/:page_id',
         'defaults' => array(

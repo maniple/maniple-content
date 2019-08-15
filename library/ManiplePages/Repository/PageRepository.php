@@ -15,18 +15,19 @@ class ManiplePages_Repository_PageRepository
     protected $_securityContext;
 
     /**
+     * @param string $type
      * @param array $options OPTIONAL
      * @return Zend_Paginator
      * @throws Zend_Paginator_Exception
      */
-    public function getPages(array $options = array())
+    public function getPagesOfType($type, array $options = array())
     {
         $select = $this->_db->select();
         $select->from(
-            array('pages' => $this->_db->getTable(ManiplePages_Model_DbTable_Pages::className)),
+            array('contents' => $this->_db->getTable(ManiplePages_Model_DbTable_Pages::className)),
             '*'
         );
-        $select->where('page_type = ?', 'page');
+        $select->where('content_type = ?', (string) $type);
         $select->where('deleted_at IS NULL');
         $select->order('updated_at DESC');
 
@@ -43,17 +44,28 @@ class ManiplePages_Repository_PageRepository
     }
 
     /**
-     * @param int $pageId
+     * @param string $type
+     * @param int|string $contentIdOrSlug
      * @return ManiplePages_Model_Page|null
      */
-    public function getPage($pageId)
+    public function getContentOfType($type, $contentIdOrSlug)
     {
         /** @var ManiplePages_Model_DbTable_Pages $pagesTable */
         $pagesTable = $this->_db->getTable(ManiplePages_Model_DbTable_Pages::className);
-        $page = $pagesTable->fetchRow(array(
-            'page_id = ?' => (int) $pageId,
-            'page_type = ?' => 'page',
-        ));
+
+        if (ctype_digit($contentIdOrSlug)) {
+            $page = $pagesTable->fetchRow(array(
+                'content_type = ?' => (string) $type,
+                'content_id = ?'   => (int) $contentIdOrSlug,
+            ));
+        }
+
+        if (empty($page)) {
+            $page = $pagesTable->fetchRow(array(
+                'content_type = ?' => (string) $type,
+                'slug = ?'         => (string) $contentIdOrSlug,
+            ));
+        }
 
         return $page;
     }

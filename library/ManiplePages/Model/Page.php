@@ -18,7 +18,7 @@ class ManiplePages_Model_Page extends Zefram_Db_Table_Row
     public function getId()
     {
         /** @noinspection PhpUndefinedFieldInspection */
-        return (int) $this->page_id;
+        return (int) $this->content_id;
     }
 
     /**
@@ -40,9 +40,9 @@ class ManiplePages_Model_Page extends Zefram_Db_Table_Row
     /**
      * @return string
      */
-    public function getContent()
+    public function getBody()
     {
-        return isset($this->PublishedVersion) ? $this->PublishedVersion->content : null;
+        return isset($this->PublishedVersion) ? $this->PublishedVersion->body : null;
     }
 
     /**
