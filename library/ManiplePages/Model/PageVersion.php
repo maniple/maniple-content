@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * @property string $title
+ * @property string $body
  * @property ManiplePages_Model_Page $Page
  * @method ManiplePages_Model_DbTable_PageVersions getTable()
  */
@@ -15,7 +17,6 @@ class ManiplePages_Model_PageVersion extends Zefram_Db_Table_Row
      */
     public function getId()
     {
-        /** @noinspection PhpUndefinedFieldInspection */
-        return (int) $this->content_version_id;
+        return (int) $this->getSimplePrimaryKey();
     }
 }

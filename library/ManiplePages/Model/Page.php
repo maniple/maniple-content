@@ -1,7 +1,8 @@
 <?php
 
 /**
- * @property ManipleUser_Model_User $Author
+ * @property int $priority
+ * @property ManipleUser_Model_User $User
  * @property ManiplePages_Model_PageVersion $LatestVersion
  * @property ManiplePages_Model_PageVersion $PublishedVersion
  * @method ManiplePages_Model_DbTable_Pages getTable()
@@ -17,8 +18,7 @@ class ManiplePages_Model_Page extends Zefram_Db_Table_Row
      */
     public function getId()
     {
-        /** @noinspection PhpUndefinedFieldInspection */
-        return (int) $this->content_id;
+        return (int) $this->getSimplePrimaryKey();
     }
 
     /**

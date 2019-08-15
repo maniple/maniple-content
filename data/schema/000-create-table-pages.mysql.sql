@@ -20,6 +20,10 @@ CREATE TABLE pages (
 
     published_version_id    INT,
 
+    is_pinned               TINYINT(1) NOT NULL DEFAULT 0,
+
+    priority                INT NOT NULL DEFAULT 0,
+
     slug                    VARCHAR(191) NOT NULL UNIQUE,
 
     INDEX pages_page_type_deleted_at_idx (page_type, deleted_at)
