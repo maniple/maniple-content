@@ -46,6 +46,14 @@ class ManiplePages_Model_Page extends Zefram_Db_Table_Row
     }
 
     /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
      * @return bool
      */
     public function hasUnpublishedVersion()

@@ -11,9 +11,9 @@
         <li class="active">{{ truncate(page.title, 80) }}</li>
     </ol>
 </header>
-<main style="padding: 0 30px 30px;">
-    <h1>{{ page.title }}</h1>
+<main style="display: block; padding: 0 30px 30px; min-height: 300px;">
+    <h1 style="margin: 0 0 30px;">{{ page.title }}</h1>
     <div>
-        {{ page.content | raw }}
+        {{ page.body | raw }}
     </div>
 </main>

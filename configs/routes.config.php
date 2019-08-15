@@ -17,6 +17,17 @@ return array(
             'action'     => 'create',
         ),
     ),
+    'maniple-pages.pages.edit' => array(
+        'route'    => 'pages/:page_id/edit',
+        'defaults' => array(
+            'module'     => 'maniple-pages',
+            'controller' => 'pages',
+            'action'     => 'edit',
+        ),
+        'reqs' => array(
+            'page_id' => '^\d+',
+        ),
+    ),
     'maniple-pages.pages.view' => array(
         'route'    => 'pages/:page_id',
         'defaults' => array(

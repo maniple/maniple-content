@@ -5,6 +5,30 @@
             padding: 20px 30px;
             background: none;
         }
+
+        .table td:last-child {
+            text-align: right;
+        }
+        .table tr:hover .btn-edit {
+            opacity: 1;
+        }
+        .btn-edit {
+            display: inline-block;
+            padding: .25em;
+            opacity: .35;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+        }
+        .btn-edit .fa {
+            vertical-align: top;
+            margin-top: .1em;
+        }
+        .btn-edit:hover {
+            background: rgba(0, 0, 0, .15);
+        }
     </style>
     <ol class="breadcrumb">
         <li><a href="{{ baseUrl() }}">{{ translate('Home') }}</a></li>
@@ -33,11 +57,14 @@
                 <td>{{ userFullName(page.user) }}</td>
                 <td>{{ page.updated_at | date('Y-m-d H:i') }}</td>
                 <td>
-                    {#
-                    <a href="{{ url('maniple-user.users.edit', { user_id: user.id }) }}{% if returnUrl %}?return_url={{ returnUrl | url_encode }}{% endif %}" class="btn-edit" title="{{ translate('Edit') }}">
-                        <i class="fa fa-pencil"></i>
-                    </a>
-                    #}
+                    <div style="white-space: nowrap">
+                        <a href="{{ url('maniple-pages.pages.view', { page_id: page.id }) }}" class="btn-edit" title="{{ translate('View') }}">
+                            <i class="fa fa-eye"></i>
+                        </a>
+                        <a href="{{ url('maniple-pages.pages.edit', { page_id: page.id }) }}{% if returnUrl %}?return_url={{ returnUrl | url_encode }}{% endif %}" class="btn-edit" title="{{ translate('Edit') }}">
+                            <i class="fa fa-pencil"></i>
+                        </a>
+                    </div>
                 </td>
             </tr>
         {% endfor %}

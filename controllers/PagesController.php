@@ -36,7 +36,8 @@ class ManiplePages_PagesController extends Maniple_Controller_Action
         ));
 
         $this->view->assign(array(
-            'pages' => $pages,
+            'pages'     => $pages,
+            'returnUrl' => $this->_request->getRequestUri(),
         ));
     }
 
@@ -53,14 +54,14 @@ class ManiplePages_PagesController extends Maniple_Controller_Action
             throw new Maniple_Controller_Exception_NotAllowed();
         }
 
-        $this->view->headLink()->append(array(
+        /** @noinspection PhpParamsInspection */
+        $this->view->headLink()->headLink(array(
             'rel'  => 'canonical',
             'href' => $this->view->serverUrl($this->view->baseUrl($page->slug)),
         ));
 
         $this->view->assign(array(
-            'title'   => $page->title,
-            'content' => $page->content,
+            'page' => $page,
         ));
     }
 

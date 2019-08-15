@@ -42,6 +42,14 @@ class ManiplePages_Repository_PageRepository
 
         $paginator->setFilter($filter = new Zefram_Filter());
 
+        $filter->addFilter(new Zend_Filter_Callback(function (array $pages) {
+            foreach ($pages as &$page) {
+                $page['id'] = $page['page_id'];
+            }
+            unset($page);
+            return $pages;
+        }));
+
         $db = $this->_db;
         $filter->addFilter(new Zend_Filter_Callback(function (array $pages) use ($db) {
             $publishedVersions = array();
@@ -129,7 +137,7 @@ class ManiplePages_Repository_PageRepository
         /** @var ManiplePages_Model_DbTable_Pages $pagesTable */
         $pagesTable = $this->_db->getTable(ManiplePages_Model_DbTable_Pages::className);
 
-        if (ctype_digit($contentIdOrSlug)) {
+        if (is_int($contentIdOrSlug) || ctype_digit($contentIdOrSlug)) {
             $page = $pagesTable->fetchRow(array(
                 'page_type = ?' => (string) $type,
                 'page_id = ?'   => (int) $contentIdOrSlug,
@@ -168,5 +176,10 @@ class ManiplePages_Repository_PageRepository
         );
 
         return $slugGenerator;
+    }
+
+    public function getSlugValidator()
+    {
+
     }
 }
