@@ -9,6 +9,19 @@ class ManiplePages_Form_Page extends Zefram_Form2
 
     public function __construct(array $options = array())
     {
+        if (empty($options['dbAdapter'])) {
+            throw new InvalidArgumentException('dbAdapter option is not provided');
+        }
+
+        $db = $options['dbAdapter'];
+        if (!$db instanceof Zefram_Db) {
+            throw new InvalidArgumentException(sprintf(
+                'dbAdapter must be an instance of Zefram_Db, %s was given',
+                is_object($db) ? get_class($db) : gettype($db)
+            ));
+        }
+        unset($options['dbAdapter']);
+
         $options['prefixPath'] = array(
             array(
                 'prefix' => 'DokoEvent_Form_',
@@ -42,7 +55,7 @@ class ManiplePages_Form_Page extends Zefram_Form2
             'slug' => array(
                 'type' => 'text',
                 'options' => array(
-                    'required' => true,
+                    'required' => false,
                     'label' => 'Slug',
                     'validators' => array(
                         array('Regex', true, array(
@@ -50,6 +63,13 @@ class ManiplePages_Form_Page extends Zefram_Form2
                             'messages' => array(
                                 Zend_Validate_Regex::NOT_MATCH => 'Identyfikator może zawierać wyłącznie małe litery (bez akcentów), cyfry oraz myślniki',
                             )
+                        )),
+                        array('Db_NoRecordExists', true, array(
+                            'table' => $db->getTable(ManiplePages_Model_DbTable_Pages::className),
+                            'field' => 'slug',
+                            'messages' => array(
+                                Zend_Validate_Db_NoRecordExists::ERROR_RECORD_FOUND => 'Podany identyfikator już istnieje w bazie',
+                            ),
                         )),
                     ),
                 ),
@@ -79,9 +99,17 @@ class ManiplePages_Form_Page extends Zefram_Form2
      * @param ManiplePages_Model_Page $page
      * @return ManiplePages_Form_Page
      */
-    public function setPage($page)
+    public function setPage(ManiplePages_Model_Page $page)
     {
         $this->_page = $page;
+
+        /** @var Zend_Validate_Db_NoRecordExists $validator */
+        $validator = $this->getElement('slug')->getValidator('Db_NoRecordExists');
+        $validator->setExclude(array(
+            'field' => 'page_id',
+            'value' => $page->getId(),
+        ));
+
         return $this;
     }
 }

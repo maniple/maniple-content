@@ -26,7 +26,9 @@ class ManiplePages_PagesController_CreateAction
             throw new Maniple_Controller_Exception_NotAllowed();
         }
 
-        $this->_form = new ManiplePages_Form_Page();
+        $this->_form = new ManiplePages_Form_Page(array(
+            'dbAdapter' => $this->_db,
+        ));
     }
 
     protected function _process()
