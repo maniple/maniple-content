@@ -23,12 +23,12 @@ class ManiplePages_Model_DbTable_Pages extends Zefram_Db_Table
         ),
         'LatestVersion' => array(
             'columns'       => 'latest_version_id',
-            'refTableClass' => ManiplePages_Model_DbTable_Pages::className,
+            'refTableClass' => ManiplePages_Model_DbTable_PageVersions::className,
             'refColumns'    => 'page_version_id',
         ),
         'PublishedVersion' => array(
             'columns'       => 'published_version_id',
-            'refTableClass' => ManiplePages_Model_DbTable_Pages::className,
+            'refTableClass' => ManiplePages_Model_DbTable_PageVersions::className,
             'refColumns'    => 'page_version_id',
         ),
     );

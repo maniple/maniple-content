@@ -1,18 +1,19 @@
 <header>
     <style>
         .breadcrumb {
+            margin: 0;
+            padding: 20px 30px;
             background: none;
-            padding: 8px 0;
         }
     </style>
     <ol class="breadcrumb">
-        <li><a href="{{ baseUrl() }}">Start</a></li>
-        <li class="active">Pages</li>
+        <li><a href="{{ baseUrl() }}">{{ translate('Home') }}</a></li>
+        <li class="active">{{ translate('Pages') }}</li>
     </ol>
 </header>
-<main>
+<main style="padding: 0 30px 30px;">
     <a href="{{ url('maniple-pages.pages.create') }}" class="btn btn-primary pull-right">
-        <i class="fa fa-plus"></i> Create page
+        <i class="fa fa-plus"></i> {{ translate('Create page') }}
     </a>
     <h1>{{ translate('Pages') }}</h1>
 
@@ -29,7 +30,7 @@
         {% for page in pages %}
             <tr>
                 <td>{{ page.title }}</td>
-                <td>{{ userFullName(page.Author) }}</td>
+                <td>{{ userFullName(page.user) }}</td>
                 <td>{{ page.updated_at | date('Y-m-d H:i') }}</td>
                 <td>
                     {#

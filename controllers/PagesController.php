@@ -43,7 +43,7 @@ class ManiplePages_PagesController extends Maniple_Controller_Action
     public function viewAction()
     {
         $pageId = (int) $this->getScalarParam('page_id');
-        $page = $this->_pageRepository->getContentOfType('page', $pageId);
+        $page = $this->_pageRepository->getPageOfType('page', $pageId);
 
         if (!$page) {
             throw new Maniple_Controller_Exception_NotFound($this->view->translate('Page not found'));
@@ -62,5 +62,24 @@ class ManiplePages_PagesController extends Maniple_Controller_Action
             'title'   => $page->title,
             'content' => $page->content,
         ));
+    }
+
+    public function slugAction()
+    {
+        $input = $this->getScalarParam('input');
+        $pageId = (int) $this->getScalarParam('page_id');
+
+        $slugGenerator = $this->_pageRepository->getSlugGenerator();
+        $slug = $slugGenerator->slugify($input);
+
+        if ($pageId) {
+            $page = $this->_pageRepository->getPageBySlug($slug);
+            if ($page->getId() === $pageId) {
+                $this->_helper->json($slug);
+                return;
+            }
+        }
+
+        $this->_helper->json($slugGenerator->create($input));
     }
 }

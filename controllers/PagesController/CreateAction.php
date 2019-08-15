@@ -26,51 +26,7 @@ class ManiplePages_PagesController_CreateAction
             throw new Maniple_Controller_Exception_NotAllowed();
         }
 
-        $this->_form = new Zefram_Form2(array(
-            'prefixPath' => array(
-                array(
-                    'prefix' => 'DokoEvent_Form_',
-                    'path'   => __DIR__ . '/../../../doko-event/library/DokoEvent/Form/',
-                ),
-            ),
-            'elements' => array(
-                'title' => array(
-                    'type' => 'text',
-                    'options' => array(
-                        'required' => true,
-                        'label' => 'Title',
-                    ),
-                ),
-                'body' => array(
-                    'type' => 'richText',
-                    'options' => array(
-                        'required' => false,
-                        'label' => 'Body',
-                    ),
-                ),
-                'slug' => array(
-                    'type' => 'text',
-                    'options' => array(
-                        'required' => true,
-                        'label' => 'Slug',
-                        'validators' => array(
-                            array('Regex', true, array(
-                                'pattern' => '/^[a-z][-a-z0-9]*$/',
-                                'messages' => array(
-                                    Zend_Validate_Regex::NOT_MATCH => 'Identyfikator może zawierać wyłącznie małe litery (bez akcentów), cyfry oraz myślniki',
-                                )
-                            )),
-                        ),
-                    ),
-                ),
-                '_submit' => array(
-                    'type' => 'submit',
-                    'options' => array(
-                        'label' => 'Save changes',
-                    ),
-                ),
-            )
-        ));
+        $this->_form = new ManiplePages_Form_Page();
     }
 
     protected function _process()
@@ -83,29 +39,36 @@ class ManiplePages_PagesController_CreateAction
             $page = $pagesTable->createRow();
             $page->created_at = time();
             $page->updated_at = time();
-            $page->content_type = 'page';
-            $page->slug = $this->getValue('slug');
+            $page->page_type = 'page';
+            $page->slug = $this->_form->getValue('slug');
             $page->save();
 
             /** @var ManiplePages_Model_DbTable_PageVersions $pageVersion */
             $pageVersionsTable = $this->_db->getTable(ManiplePages_Model_DbTable_PageVersions::className);
             $pageVersion = $pageVersionsTable->createRow();
-            $pageVersion->title = $this->getValue('title');
-            $pageVersion->body = $this->getValue('body');
-            $pageVersion->saved_at = time();
+            $pageVersion->page_id = $page->getId();
             $pageVersion->user_id = $this->_securityContext->getUser()->getId();
+            $pageVersion->saved_at = time();
             $pageVersion->markup_type = 'html';
-            $pageVersion->content_id = $page->getId();
+            $pageVersion->title = $this->_form->getValue('title');
+            $pageVersion->body = $this->_form->getValue('body');
             $pageVersion->save();
 
             $page->PublishedVersion = $pageVersion;
             $page->LatestVersion = $pageVersion;
             $page->save();
 
+            $this->_db->commit();
+
         } catch (Exception $e) {
             $this->_db->rollBack();
             throw $e;
         }
 
+        $this->_helper->flashMessenger->addSuccessMessage(
+            $this->view->translate('Page has been successfully created')
+        );
+
+        return $this->view->url('maniple-pages.pages.index');
     }
 }

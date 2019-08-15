@@ -1,0 +1,57 @@
+{{ form().openTag(form) | raw }}
+
+{{ form.title.setAttrib('style', 'display: block; width: 100%') | raw }}
+
+<dl style="margin:20px 0">
+    <dt>{{ form.slug.label }}</dt>
+    <dd>
+        <div>
+        {{ serverUrl(baseUrl('/')) }}
+        {{ form.slug.setAttrib('style', 'min-width: 300px').renderViewHelper() | raw }}
+        <button type="button" class="btn btn-sm btn-primary" data-action="generate-slug" style="padding: .25em 1.5em; margin: 1px 0 0 5px; vertical-align: top;" disabled>
+            {{ translate('Generate') }}
+        </button>
+        </div>
+        {{ form.slug.renderErrors() | raw }}
+    </dd>
+</dl>
+
+{{ form.body.setAttrib('style', 'display: block; width: 100%') | raw }}
+
+{% if form.getElement('submit') %}
+<div class="text-center" style="margin-top: 30px">
+    <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+    <a role="button" class="btn btn-secondary" href="{{ url('maniple-pages.pages.index') }}">{{ translate('Cancel') }}</a>
+</div>
+{% endif %}
+
+{{ form().closeTag() | raw }}
+
+<script>
+jQuery(function ($) {
+    var $form = $('#{{ form.getAttrib('id') }}');
+
+    function generateSlug() {
+        $.ajax({
+            url: '{{ url('maniple-pages.pages.slug') }}',
+            type: 'get',
+            dataType: 'json',
+            data: {
+                input: $form.find('[name="title"]').val(),
+                page_id: {{ (form.page ? form.page.id : null) | json_encode }}
+            }
+        }).done(function (response) {
+            $form.find('[name="slug"]').val(response);
+        });
+    }
+
+    $form.find('[data-action="generate-slug"]').each(function () {
+        var $elem = $(this);
+
+        $elem.removeAttr('disabled');
+        $elem.on('click', function () {
+            generateSlug();
+        });
+    });
+});
+</script>

@@ -28,4 +28,12 @@ return array(
             'page_id' => '^\d+',
         ),
     ),
+    'maniple-pages.pages.slug' => array(
+        'route'    => 'pages/slug',
+        'defaults' => array(
+            'module'     => 'maniple-pages',
+            'controller' => 'pages',
+            'action'     => 'slug',
+        ),
+    ),
 );
