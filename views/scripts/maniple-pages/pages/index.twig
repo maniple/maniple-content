@@ -58,7 +58,7 @@
                 <td>{{ page.updated_at | date('Y-m-d H:i') }}</td>
                 <td>
                     <div style="white-space: nowrap">
-                        <a href="{{ url('maniple-pages.pages.view', { page_id: page.id }) }}" class="btn-edit" title="{{ translate('View') }}">
+                        <a href="{{ baseUrl(page.slug) }}" class="btn-edit" title="{{ translate('View') }}" target="_blank">
                             <i class="fa fa-eye"></i>
                         </a>
                         <a href="{{ url('maniple-pages.pages.edit', { page_id: page.id }) }}{% if returnUrl %}?return_url={{ returnUrl | url_encode }}{% endif %}" class="btn-edit" title="{{ translate('Edit') }}">
