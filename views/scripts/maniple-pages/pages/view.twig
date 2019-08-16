@@ -12,8 +12,13 @@
     </ol>
 </header>
 <main style="display: block; padding: 0 30px 30px; min-height: 300px;">
-    <h1 style="margin: 0 0 30px;">{{ page.title }}</h1>
+    <style>
+        hr {
+            border-color: currentColor;
+        }
+    </style>
+    <h1 style="margin: 0 0 30px;">{{ page_title }}</h1>
     <div>
-        {{ page.body | raw }}
+        {{ page_body | raw }}
     </div>
 </main>

@@ -2,9 +2,9 @@
 
 CREATE TABLE page_versions (
 
-    page_version_id  INT PRIMARY KEY AUTO_INCREMENT,
+    page_version_id     INT PRIMARY KEY AUTO_INCREMENT,
 
-    page_id          INT NOT NULL,
+    page_id             INT NOT NULL,
 
     user_id             INT NOT NULL,
 
@@ -15,6 +15,8 @@ CREATE TABLE page_versions (
     title               VARCHAR(191) NOT NULL,
 
     body                TEXT,
+
+    raw_body            TEXT,
 
     excerpt             TEXT,
 

@@ -54,14 +54,30 @@ class ManiplePages_PagesController extends Maniple_Controller_Action
             throw new Maniple_Controller_Exception_NotAllowed();
         }
 
-        /** @noinspection PhpParamsInspection */
+        $this->view->headTitle($page->getTitle());
         $this->view->headLink()->headLink(array(
             'rel'  => 'canonical',
-            'href' => $this->view->serverUrl($this->view->baseUrl($page->slug)),
+            'href' => $this->view->serverUrl($this->view->baseUrl($page->getSlug())),
         ));
 
+        // If page body starts with <h1> it will be displayed as the title,
+        // and title column will be used for <title> and breadcrumbs
+        $pageBody = $page->getBody();
+        if (preg_match('/^\s*<h1[\s>]/i', $pageBody)) {
+            // extract title from <h1> tag
+            $pos = stripos($pageBody, '</h1>');
+            $pageTitle = substr($pageBody, 0, $pos);
+            $pageTitle = substr($pageTitle, strpos($pageTitle, '>') + 1);
+            $pageBody = substr($pageBody, $pos + 5);
+        } else {
+            $pageTitle = $page->getTitle();
+        }
+
         $this->view->assign(array(
-            'page' => $page,
+            'title'      => $page->getTitle(),
+            'page'       => $page,
+            'page_title' => $pageTitle,
+            'page_body'  => $pageBody,
         ));
     }
 

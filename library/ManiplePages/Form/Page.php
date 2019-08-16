@@ -45,7 +45,7 @@ class ManiplePages_Form_Page extends Zefram_Form2
                     'label' => 'Title',
                     'validators' => array(
                         array('StringLength', true, array(
-                            'max' => 191,
+                            'max' => 80,
                         )),
                     ),
                 ),
@@ -55,6 +55,38 @@ class ManiplePages_Form_Page extends Zefram_Form2
                 'options' => array(
                     'required' => false,
                     'label' => 'Body',
+                    'tinymce' => array(
+                        'plugins' => array(
+                            'hr',
+                        ),
+                        'toolbar' => 'styleselect | bold italic underline strikethrough | subscript superscript | link blockquote | hr | undo redo',
+                        'style_formats' => array(
+                            array('title' => 'Paragraph', 'block' => 'p'),
+                            array('title' => 'Heading 1', 'block' => 'h1'),
+                            array('title' => 'Heading 2', 'block' => 'h2'),
+                            array('title' => 'Heading 3', 'block' => 'h3'),
+                            array('title' => 'Heading 4', 'block' => 'h4'),
+                            array('title' => 'Heading 5', 'block' => 'h5'),
+                            array('title' => 'Heading 6', 'block' => 'h6'),
+                            array('title' => 'Pre', 'block' => 'pre'),
+                        ),
+                    ),
+                    'htmlpurifier' => array(
+                        'HTML.Allowed' => '
+                            a[href|target],
+                            strong,em,s,u,
+                            p,
+                            br,
+                            sub,sup,
+                            blockquote,
+                            pre,
+                            h1,h2,h3,h4,h5,h6,
+                            hr
+                        ',
+                    ),
+                    'validators' => array(
+                        array(new ManiplePages_Validate_Heading1(), true),
+                    ),
                 ),
             ),
             'slug' => array(

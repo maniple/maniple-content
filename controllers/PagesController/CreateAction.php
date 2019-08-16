@@ -38,22 +38,24 @@ class ManiplePages_PagesController_CreateAction
         try {
             /** @var ManiplePages_Model_DbTable_Pages $pagesTable */
             $pagesTable = $this->_db->getTable(ManiplePages_Model_DbTable_Pages::className);
-            $page = $pagesTable->createRow();
-            $page->created_at = time();
-            $page->updated_at = time();
-            $page->page_type = 'page';
-            $page->slug = $this->_form->getValue('slug');
+            $page = $pagesTable->createRow(array(
+                'page_type'  => 'page',
+                'created_at' => time(),
+                'updated_at' => time(),
+                'slug'       => $this->_form->getValue('slug'),
+            ));
             $page->save();
 
             /** @var ManiplePages_Model_DbTable_PageVersions $pageVersion */
             $pageVersionsTable = $this->_db->getTable(ManiplePages_Model_DbTable_PageVersions::className);
-            $pageVersion = $pageVersionsTable->createRow();
-            $pageVersion->page_id = $page->getId();
-            $pageVersion->user_id = $this->_securityContext->getUser()->getId();
-            $pageVersion->saved_at = time();
-            $pageVersion->markup_type = 'html';
-            $pageVersion->title = $this->_form->getValue('title');
-            $pageVersion->body = $this->_form->getValue('body');
+            $pageVersion = $pageVersionsTable->createRow(array(
+                'user_id'     => $this->_securityContext->getUser()->getId(),
+                'saved_at'    => time(),
+                'markup_type' => 'html',
+                'title'       => $this->_form->getValue('title'),
+                'body'        => $this->_form->getValue('body'),
+            ));
+            $pageVersion->Page = $page;
             $pageVersion->save();
 
             $page->PublishedVersion = $pageVersion;

@@ -1,7 +1,6 @@
 <?php
 
 /**
- * @property int $priority
  * @property ManipleUser_Model_User $User
  * @property ManiplePages_Model_PageVersion $LatestVersion
  * @property ManiplePages_Model_PageVersion $PublishedVersion
@@ -34,7 +33,7 @@ class ManiplePages_Model_Page extends Zefram_Db_Table_Row
      */
     public function getTitle()
     {
-        return isset($this->PublishedVersion) ? $this->PublishedVersion->title : null;
+        return isset($this->PublishedVersion) ? $this->PublishedVersion->getTitle() : null;
     }
 
     /**
@@ -42,7 +41,23 @@ class ManiplePages_Model_Page extends Zefram_Db_Table_Row
      */
     public function getBody()
     {
-        return isset($this->PublishedVersion) ? $this->PublishedVersion->body : null;
+        return isset($this->PublishedVersion) ? $this->PublishedVersion->getBody() : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRawBody()
+    {
+        return isset($this->PublishedVersion) ? $this->PublishedVersion->getRawBody() : null;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMarkupType()
+    {
+        return isset($this->PublishedVersion) ? $this->PublishedVersion->getMarkupType() : null;
     }
 
     /**
@@ -51,6 +66,14 @@ class ManiplePages_Model_Page extends Zefram_Db_Table_Row
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 
     /**
