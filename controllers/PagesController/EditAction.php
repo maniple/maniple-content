@@ -53,37 +53,63 @@ class ManiplePages_PagesController_EditAction
 
     protected function _defaults()
     {
+        $latestVersion = $this->_page->LatestVersion;
+
         return array(
-            'title' => $this->_page->getTitle(),
-            'body'  => ($rawBody = $this->_page->getRawBody()) !== null ? $rawBody : $this->_page->getBody(),
+            'title' => $latestVersion->getTitle(),
+            'body'  => ($rawBody = $latestVersion->getRawBody()) !== null ? $rawBody : $latestVersion->getBody(),
             'slug'  => $this->_page->getSlug(),
         );
+    }
+
+    /**
+     * @param string[] $fields
+     * @return bool
+     */
+    protected function _isModified(array $fields)
+    {
+        $defaults = $this->_defaults();
+
+        $isModified = false;
+        foreach ($fields as $field) {
+            $isModified = $isModified || ($defaults[$field] !== $this->_form->getValue($field));
+        }
+
+        return $isModified;
     }
 
     protected function _process()
     {
         $this->_db->beginTransaction();
-
         try {
-            /** @var ManiplePages_Model_DbTable_PageVersions $pageVersionsTable */
-            $pageVersionsTable = $this->_db->getTable(ManiplePages_Model_DbTable_PageVersions::className);
-            $pageVersion = $pageVersionsTable->createRow(array(
-                'user_id'     => $this->_securityContext->getUser()->getId(),
-                'saved_at'    => time(),
-                'markup_type' => 'html',
-                'title'       => $this->_form->getValue('title'),
-                'body'        => $this->_form->getValue('body'),
-            ));
-            $pageVersion->Page = $this->_page;
-            $pageVersion->save();
+            $page = $this->_page;
 
-            $this->_page->setFromArray(array(
-                'slug'       => $this->_form->getValue('slug'),
-                'updated_at' => time(),
+            $isModified = $this->_isModified(array('title', 'body'));
+            if ($isModified) {
+                $pageVersion = $page->LatestVersion->getTable()->createRow(array(
+                    'user_id'     => $this->_securityContext->getUser()->getId(),
+                    'saved_at'    => time(),
+                    'markup_type' => 'html',
+                    'title'       => $this->_form->getValue('title'),
+                    'body'        => $this->_form->getValue('body'),
+                ));
+                $pageVersion->Page = $page;
+                $pageVersion->save();
+
+                $page->LatestVersion = $pageVersion;
+                $page->PublishedVersion = $pageVersion;
+            }
+
+            $page->setFromArray(array(
+                'slug' => $this->_form->getValue('slug'),
             ));
-            $this->_page->LatestVersion = $pageVersion;
-            $this->_page->PublishedVersion = $pageVersion;
-            $this->_page->save();
+
+            if ($page->isModified()) {
+                $page->setFromArray(array(
+                    'updated_at' => time(),
+                ));
+                $page->save();
+            }
 
             $this->_db->commit();
 
