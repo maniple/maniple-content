@@ -4,7 +4,7 @@ class ManiplePages_Bootstrap extends Maniple_Application_Module_Bootstrap
 {
     public function getModuleDependencies()
     {
-        return array();
+        return array('maniple-user');
     }
 
     public function getResourcesConfig()
@@ -58,5 +58,12 @@ class ManiplePages_Bootstrap extends Maniple_Application_Module_Bootstrap
         $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
         $viewRenderer->setViewScriptPathSpec(':module/:controller/:action.:suffix', 'maniple-pages');
         $viewRenderer->setViewSuffix('twig', 'maniple-pages');
+    }
+
+    protected function _initFrontController()
+    {
+        /** @var Zend_Controller_Front $frontController */
+        $frontController = $this->getApplication()->bootstrap('FrontController')->getResource('FrontController');
+        $frontController->registerPlugin(new ManiplePages_Controller_Plugin_PageResolver());
     }
 }

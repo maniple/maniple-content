@@ -2,6 +2,8 @@
 
 class ManiplePages_Repository_PageRepository
 {
+    const className = __CLASS__;
+
     /**
      * @Inject
      * @var Zefram_Db
