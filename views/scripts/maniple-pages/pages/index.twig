@@ -53,7 +53,7 @@
         <tbody>
         {% for page in pages %}
             <tr>
-                <td>{{ page.title }}</td>
+                <td title="{{ page.title }}">{{ truncate(page.title, 80) }}</td>
                 <td>{{ userFullName(page.user) }}</td>
                 <td>{{ page.updated_at | date('Y-m-d H:i') }}</td>
                 <td>

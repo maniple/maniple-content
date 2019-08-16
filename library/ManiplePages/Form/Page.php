@@ -43,6 +43,11 @@ class ManiplePages_Form_Page extends Zefram_Form2
                 'options' => array(
                     'required' => true,
                     'label' => 'Title',
+                    'validators' => array(
+                        array('StringLength', true, array(
+                            'max' => 191,
+                        )),
+                    ),
                 ),
             ),
             'body' => array(
