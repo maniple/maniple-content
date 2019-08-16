@@ -75,7 +75,7 @@ class ManiplePages_PagesController extends Maniple_Controller_Action
 
         if ($pageId) {
             $page = $this->_pageRepository->getPageBySlug($slug);
-            if ($page->getId() === $pageId) {
+            if ($page && $page->getId() === $pageId) {
                 $this->_helper->json($slug);
                 return;
             }
