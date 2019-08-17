@@ -16,20 +16,15 @@ class ManiplePages_Model_DbTable_Pages extends Zefram_Db_Table
     protected $_name = 'pages';
 
     protected $_referenceMap = array(
-        'User' => array(
-            'columns'       => 'user_id',
-            'refTableClass' => ManipleUser_Model_DbTable_Users::className,
-            'refColumns'    => 'user_id',
+        'LatestRevision' => array(
+            'columns'       => 'latest_revision_id',
+            'refTableClass' => ManiplePages_Model_DbTable_PageRevisions::className,
+            'refColumns'    => 'page_revision_id',
         ),
-        'LatestVersion' => array(
-            'columns'       => 'latest_version_id',
-            'refTableClass' => ManiplePages_Model_DbTable_PageVersions::className,
-            'refColumns'    => 'page_version_id',
-        ),
-        'PublishedVersion' => array(
-            'columns'       => 'published_version_id',
-            'refTableClass' => ManiplePages_Model_DbTable_PageVersions::className,
-            'refColumns'    => 'page_version_id',
+        'PublishedRevision' => array(
+            'columns'       => 'published_revision_id',
+            'refTableClass' => ManiplePages_Model_DbTable_PageRevisions::className,
+            'refColumns'    => 'page_revision_id',
         ),
     );
 }

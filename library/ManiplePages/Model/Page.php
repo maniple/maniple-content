@@ -2,8 +2,8 @@
 
 /**
  * @property ManipleUser_Model_User $User
- * @property ManiplePages_Model_PageVersion $LatestVersion
- * @property ManiplePages_Model_PageVersion $PublishedVersion
+ * @property ManiplePages_Model_PageRevision $LatestRevision
+ * @property ManiplePages_Model_PageRevision $PublishedRevision
  * @method ManiplePages_Model_DbTable_Pages getTable()
  */
 class ManiplePages_Model_Page extends Zefram_Db_Table_Row
@@ -33,7 +33,7 @@ class ManiplePages_Model_Page extends Zefram_Db_Table_Row
      */
     public function getTitle()
     {
-        return isset($this->PublishedVersion) ? $this->PublishedVersion->getTitle() : null;
+        return isset($this->PublishedRevision) ? $this->PublishedRevision->getTitle() : null;
     }
 
     /**
@@ -41,7 +41,7 @@ class ManiplePages_Model_Page extends Zefram_Db_Table_Row
      */
     public function getBody()
     {
-        return isset($this->PublishedVersion) ? $this->PublishedVersion->getBody() : null;
+        return isset($this->PublishedRevision) ? $this->PublishedRevision->getBody() : null;
     }
 
     /**
@@ -49,7 +49,7 @@ class ManiplePages_Model_Page extends Zefram_Db_Table_Row
      */
     public function getMarkupType()
     {
-        return isset($this->PublishedVersion) ? $this->PublishedVersion->getMarkupType() : null;
+        return isset($this->PublishedRevision) ? $this->PublishedRevision->getMarkupType() : null;
     }
 
     /**
@@ -71,8 +71,8 @@ class ManiplePages_Model_Page extends Zefram_Db_Table_Row
     /**
      * @return bool
      */
-    public function hasUnpublishedVersion()
+    public function hasUnpublishedRevision()
     {
-        return $this->published_version_id !== $this->latest_version_id;
+        return $this->published_revision_id !== $this->latest_revision_id;
     }
 }

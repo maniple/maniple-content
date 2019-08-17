@@ -2,20 +2,20 @@
 
 /**
  * @property ManiplePages_Model_Page $Page
- * @method ManiplePages_Model_DbTable_PageVersions getTable()
+ * @method ManiplePages_Model_DbTable_PageRevisions getTable()
  */
-class ManiplePages_Model_PageVersion extends Zefram_Db_Table_Row
+class ManiplePages_Model_PageRevision extends Zefram_Db_Table_Row
 {
     const className = __CLASS__;
 
-    protected $_tableClass = ManiplePages_Model_DbTable_PageVersions::className;
+    protected $_tableClass = ManiplePages_Model_DbTable_PageRevisions::className;
 
     /**
      * @return int
      */
     public function getId()
     {
-        return (int) $this->page_version_id;
+        return (int) $this->page_revision_id;
     }
 
     /**

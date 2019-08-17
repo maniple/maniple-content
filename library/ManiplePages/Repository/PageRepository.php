@@ -54,36 +54,36 @@ class ManiplePages_Repository_PageRepository
 
         $db = $this->_db;
         $filter->addFilter(new Zend_Filter_Callback(function (array $pages) use ($db) {
-            $publishedVersions = array();
+            $publishedRevisions = array();
             foreach ($pages as $page) {
-                $publishedVersionId = (int) $page['published_version_id'];
-                $publishedVersions[$publishedVersionId] = null;
+                $publishedRevisionId = (int) $page['published_revision_id'];
+                $publishedRevisions[$publishedRevisionId] = null;
             }
 
-            if (count($publishedVersions)) {
+            if (count($publishedRevisions)) {
                 $select = $db->select();
                 $select->from(
-                    $db->getTable(ManiplePages_Model_DbTable_PageVersions::className),
+                    $db->getTable(ManiplePages_Model_DbTable_PageRevisions::className),
                     array(
                         'page_id',
-                        'page_version_id',
+                        'page_revision_id',
                         'user_id',
                         'title',
                     )
                 );
-                $select->where('page_version_id IN (?)', array_keys($publishedVersions));
+                $select->where('page_revision_id IN (?)', array_keys($publishedRevisions));
 
-                foreach ($select->query()->fetchAll() as $pageVersion) {
-                    $pageVersionId = (int) $pageVersion['page_version_id'];
-                    $publishedVersions[$pageVersionId] = $pageVersion;
+                foreach ($select->query()->fetchAll() as $pageRevision) {
+                    $pageRevisionId = (int) $pageRevision['page_revision_id'];
+                    $publishedRevisions[$pageRevisionId] = $pageRevision;
                 }
 
                 foreach ($pages as $i => &$page) {
-                    $publishedVersionId = (int) $page['published_version_id'];
-                    $pageVersion = $publishedVersions[$publishedVersionId];
+                    $publishedRevisionId = (int) $page['published_revision_id'];
+                    $pageRevision = $publishedRevisions[$publishedRevisionId];
 
-                    $page['user_id'] = $pageVersion ? $pageVersion['user_id'] : null;
-                    $page['title'] = $pageVersion ? $pageVersion['title'] : null;
+                    $page['user_id'] = $pageRevision ? $pageRevision['user_id'] : null;
+                    $page['title'] = $pageRevision ? $pageRevision['title'] : null;
                 }
                 unset($page);
             }
@@ -149,7 +149,7 @@ class ManiplePages_Repository_PageRepository
         if (empty($page)) {
             $page = $pagesTable->fetchRow(array(
                 'page_type = ?' => (string) $type,
-                'slug = ?'         => (string) $contentIdOrSlug,
+                'slug = ?'      => (string) $contentIdOrSlug,
             ));
         }
 
@@ -178,10 +178,5 @@ class ManiplePages_Repository_PageRepository
         );
 
         return $slugGenerator;
-    }
-
-    public function getSlugValidator()
-    {
-
     }
 }

@@ -46,20 +46,20 @@ class ManiplePages_PagesController_CreateAction
             ));
             $page->save();
 
-            /** @var ManiplePages_Model_DbTable_PageVersions $pageVersion */
-            $pageVersionsTable = $this->_db->getTable(ManiplePages_Model_DbTable_PageVersions::className);
-            $pageVersion = $pageVersionsTable->createRow(array(
+            /** @var ManiplePages_Model_DbTable_PageRevisions $pageRevisionsTable */
+            $pageRevisionsTable = $this->_db->getTable(ManiplePages_Model_DbTable_PageRevisions::className);
+            $pageRevision = $pageRevisionsTable->createRow(array(
                 'user_id'     => $this->_securityContext->getUser()->getId(),
                 'saved_at'    => time(),
                 'markup_type' => 'html',
                 'title'       => $this->_form->getValue('title'),
                 'body'        => $this->_form->getValue('body'),
             ));
-            $pageVersion->Page = $page;
-            $pageVersion->save();
+            $pageRevision->Page = $page;
+            $pageRevision->save();
 
-            $page->PublishedVersion = $pageVersion;
-            $page->LatestVersion = $pageVersion;
+            $page->PublishedRevision = $pageRevision;
+            $page->LatestRevision = $pageRevision;
             $page->save();
 
             $this->_db->commit();

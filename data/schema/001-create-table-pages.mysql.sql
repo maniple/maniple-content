@@ -16,9 +16,9 @@ CREATE TABLE pages (
 
     deleted_at              INT,
 
-    latest_version_id       INT,
+    latest_revision_id      INT,
 
-    published_version_id    INT,
+    published_revision_id   INT,
 
     is_pinned               TINYINT(1) NOT NULL DEFAULT 0,
 

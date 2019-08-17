@@ -53,11 +53,11 @@ class ManiplePages_PagesController_EditAction
 
     protected function _defaults()
     {
-        $latestVersion = $this->_page->LatestVersion;
+        $latestRevision = $this->_page->LatestRevision;
 
         return array(
-            'title' => $latestVersion ? $latestVersion->getTitle() : null,
-            'body'  => $latestVersion ? $latestVersion->getBody() : null,
+            'title' => $latestRevision ? $latestRevision->getTitle() : null,
+            'body'  => $latestRevision ? $latestRevision->getBody() : null,
             'slug'  => $this->_page->getSlug(),
         );
     }
@@ -86,25 +86,25 @@ class ManiplePages_PagesController_EditAction
 
             $isModified = $this->_isModified(array('title', 'body'));
             if ($isModified) {
-                $pageVersion = $page->LatestVersion->getTable()->createRow(array(
+                $pageRevision = $page->LatestRevision->getTable()->createRow(array(
                     'user_id'     => $this->_securityContext->getUser()->getId(),
                     'saved_at'    => time(),
                     'markup_type' => 'html',
                     'title'       => $this->_form->getValue('title'),
                     'body'        => $this->_form->getValue('body'),
                 ));
-                $pageVersion->Page = $page;
-                $pageVersion->save();
+                $pageRevision->Page = $page;
+                $pageRevision->save();
 
-                $page->LatestVersion = $pageVersion;
-                $page->PublishedVersion = $pageVersion;
+                $page->LatestRevision = $pageRevision;
+                $page->PublishedRevision = $pageRevision;
             }
 
             $page->setFromArray(array(
                 'slug' => $this->_form->getValue('slug'),
             ));
 
-            // page version or slug has changed
+            // page revision or slug has changed
             if ($page->isModified()) {
                 $page->setFromArray(array(
                     'updated_at' => time(),
