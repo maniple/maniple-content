@@ -56,8 +56,8 @@ class ManiplePages_PagesController_EditAction
         $latestVersion = $this->_page->LatestVersion;
 
         return array(
-            'title' => $latestVersion->getTitle(),
-            'body'  => ($rawBody = $latestVersion->getRawBody()) !== null ? $rawBody : $latestVersion->getBody(),
+            'title' => $latestVersion ? $latestVersion->getTitle() : null,
+            'body'  => $latestVersion ? $latestVersion->getBody() : null,
             'slug'  => $this->_page->getSlug(),
         );
     }
@@ -104,6 +104,7 @@ class ManiplePages_PagesController_EditAction
                 'slug' => $this->_form->getValue('slug'),
             ));
 
+            // page version or slug has changed
             if ($page->isModified()) {
                 $page->setFromArray(array(
                     'updated_at' => time(),

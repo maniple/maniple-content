@@ -16,8 +16,6 @@ CREATE TABLE page_versions (
 
     body                TEXT,
 
-    raw_body            TEXT,
-
     excerpt             TEXT,
 
     FOREIGN KEY page_versions_page_id_fkey (page_id)

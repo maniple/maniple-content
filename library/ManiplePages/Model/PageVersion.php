@@ -15,7 +15,7 @@ class ManiplePages_Model_PageVersion extends Zefram_Db_Table_Row
      */
     public function getId()
     {
-        return (int) $this->getSimplePrimaryKey();
+        return (int) $this->page_version_id;
     }
 
     /**
@@ -40,13 +40,5 @@ class ManiplePages_Model_PageVersion extends Zefram_Db_Table_Row
     public function getBody()
     {
         return $this->body;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRawBody()
-    {
-        return $this->raw_body;
     }
 }
