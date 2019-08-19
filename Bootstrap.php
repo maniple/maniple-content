@@ -35,18 +35,13 @@ class ManiplePages_Bootstrap extends Maniple_Application_Module_Bootstrap
         );
     }
 
-    /**
-     * Register autoloader paths
-     */
-    protected function _initAutoloader()
+    public function getAutoloaderConfig()
     {
-        Zend_Loader_AutoloaderFactory::factory(array(
-            'Zend_Loader_StandardAutoloader' => array(
-                'prefixes' => array(
-                    'ManiplePages_' => dirname(__FILE__) . '/library/ManiplePages/',
-                ),
+        return array(
+            'prefixes' => array(
+                'ManiplePages_' => dirname(__FILE__) . '/library/ManiplePages/',
             ),
-        ));
+        );
     }
 
     /**
