@@ -2,8 +2,13 @@
 
 return array(
     // ManiplePages_Validate_Heading1
-    "There may be only one Heading 1 on the page" => "Storna może zawierać tylko jeden Nagłówek 1",
+    "There may be only one Heading 1 on the page" => "Strona może zawierać tylko jeden Nagłówek 1",
     "Heading 1 may only appear at the beginning of the page" => "Nagłówek 1 może wystąpić tylko na początku strony",
+
+    // ManiplePages_Form_Page
+    'Page body' => 'Treść strony',
+    'A slug must include only lowercase alphanumeric characters and dashes' => 'Identyfikator może zawierać wyłącznie małe litery (bez akcentów), cyfry oraz myślniki',
+    'This slug is already used' => 'Podany identyfikator jest już używany',
 
     // templates
     'Home' => 'Start',

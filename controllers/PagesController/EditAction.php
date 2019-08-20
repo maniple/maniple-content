@@ -100,8 +100,14 @@ class ManiplePages_PagesController_EditAction
                 $page->PublishedRevision = $pageRevision;
             }
 
+            $slug = $this->_form->getValue('slug');
+            if (!strlen($slug)) {
+                $slugGenerator = $this->_pageRepository->getSlugGenerator();
+                $slug = $slugGenerator->slugify($this->_form->getValue('title'));
+            }
+
             $page->setFromArray(array(
-                'slug' => $this->_form->getValue('slug'),
+                'slug' => $slug,
             ));
 
             // page revision or slug has changed

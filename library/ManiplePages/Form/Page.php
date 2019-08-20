@@ -54,12 +54,13 @@ class ManiplePages_Form_Page extends Zefram_Form2
                 'type' => 'richText',
                 'options' => array(
                     'required' => false,
-                    'label' => 'Body',
+                    'label' => 'Page body',
                     'tinymce' => array(
                         'plugins' => array(
+                            'lists',
                             'hr',
                         ),
-                        'toolbar' => 'styleselect | bold italic underline strikethrough | subscript superscript | link blockquote | hr | undo redo',
+                        'toolbar' => 'styleselect | bold italic underline strikethrough | subscript superscript | numlist bullist | link blockquote | hr | undo redo',
                         'style_formats' => array(
                             array('title' => 'Paragraph', 'block' => 'p'),
                             array('title' => 'Heading 1', 'block' => 'h1'),
@@ -81,7 +82,8 @@ class ManiplePages_Form_Page extends Zefram_Form2
                             blockquote,
                             pre,
                             h1,h2,h3,h4,h5,h6,
-                            hr
+                            hr,
+                            ul,ol,li
                         ',
                     ),
                     'validators' => array(
@@ -98,14 +100,14 @@ class ManiplePages_Form_Page extends Zefram_Form2
                         array('Regex', true, array(
                             'pattern' => '/^[a-z][-a-z0-9]*$/',
                             'messages' => array(
-                                Zend_Validate_Regex::NOT_MATCH => 'Identyfikator może zawierać wyłącznie małe litery (bez akcentów), cyfry oraz myślniki',
+                                Zend_Validate_Regex::NOT_MATCH => 'A slug must include only lowercase alphanumeric characters and dashes',
                             )
                         )),
                         array('Db_NoRecordExists', true, array(
                             'table' => $db->getTable(ManiplePages_Model_DbTable_Pages::className),
                             'field' => 'slug',
                             'messages' => array(
-                                Zend_Validate_Db_NoRecordExists::ERROR_RECORD_FOUND => 'Podany identyfikator już istnieje w bazie',
+                                Zend_Validate_Db_NoRecordExists::ERROR_RECORD_FOUND => 'This slug is already used',
                             ),
                         )),
                     ),

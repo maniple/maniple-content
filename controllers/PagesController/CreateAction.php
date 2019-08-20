@@ -17,6 +17,12 @@ class ManiplePages_PagesController_CreateAction
      */
     protected $_db;
 
+    /**
+     * @Inject
+     * @var ManiplePages_Repository_PageRepository
+     */
+    protected $_pageRepository;
+
     protected function _prepare()
     {
         if (!$this->_securityContext->isAuthenticated()) {
@@ -36,13 +42,19 @@ class ManiplePages_PagesController_CreateAction
         $this->_db->beginTransaction();
 
         try {
+            $slug = $this->_form->getValue('slug');
+            if (!strlen($slug)) {
+                $slugGenerator = $this->_pageRepository->getSlugGenerator();
+                $slug = $slugGenerator->slugify($this->_form->getValue('title'));
+            }
+
             /** @var ManiplePages_Model_DbTable_Pages $pagesTable */
             $pagesTable = $this->_db->getTable(ManiplePages_Model_DbTable_Pages::className);
             $page = $pagesTable->createRow(array(
                 'page_type'  => 'page',
                 'created_at' => time(),
                 'updated_at' => time(),
-                'slug'       => $this->_form->getValue('slug'),
+                'slug'       => $slug,
             ));
             $page->save();
 
