@@ -58,6 +58,12 @@ class ManiplePages_Controller_Plugin_PageResolver extends Zend_Controller_Plugin
                 ->getResource(ManiplePages_Repository_PageRepository::className);
 
             $requestUri = $request->getRequestUri();
+            $baseUrl = $request->getBaseUrl();
+
+            // remove baseUrl from requestUri
+            if (substr($requestUri, 0, strlen($baseUrl)) === $baseUrl) {
+                $requestUri = substr($requestUri, strlen($baseUrl));
+            }
 
             $slug = trim(strtok($requestUri, '?'), '/');
             $page = $pageRepository->getPageBySlug($slug);
