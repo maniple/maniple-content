@@ -53,6 +53,7 @@ class ManiplePages_PagesController_CreateAction
             $page = $pagesTable->createRow(array(
                 'page_type'    => 'page',
                 'created_at'   => time(),
+                'created_by'   => $this->_securityContext->getUser()->getId(),
                 'updated_at'   => time(),
                 'published_at' => time(),
                 'slug'         => $slug,

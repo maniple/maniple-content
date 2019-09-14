@@ -44,15 +44,42 @@ class ManiplePages_Repository_PageRepository
 
         $paginator->setFilter($filter = new Zefram_Filter());
 
-        $filter->addFilter(new Zend_Filter_Callback(function (array $pages) {
+        $db = $this->_db;
+
+        // Add 'id', expand 'created_by' reference into user data
+        $filter->addFilter(new Zend_Filter_Callback(function (array $pages) use ($db) {
+            $users = array();
             foreach ($pages as &$page) {
                 $page['id'] = $page['page_id'];
+                $users[(int) $page['created_by']] = null;
             }
             unset($page);
+
+            if (count($users)) {
+                $select = $db->select();
+                $select->from(
+                    $db->getTable(ManipleUser_Model_DbTable_Users::className),
+                    array(
+                        'user_id',
+                        'first_name',
+                        'last_name',
+                    )
+                );
+                $select->where('user_id IN (?)', array_keys($users));
+
+                foreach ($select->query()->fetchAll() as $user) {
+                    $users[(int) $user['user_id']] = $user;
+                }
+            }
+
+            foreach ($pages as &$page) {
+                $page['created_by'] = $users[(int) $page['created_by']];
+            }
+            unset($page);
+
             return $pages;
         }));
 
-        $db = $this->_db;
         $filter->addFilter(new Zend_Filter_Callback(function (array $pages) use ($db) {
             $publishedRevisions = array();
             foreach ($pages as $page) {

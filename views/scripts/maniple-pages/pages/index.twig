@@ -54,7 +54,7 @@
         {% for page in pages %}
             <tr>
                 <td title="{{ page.title }}">{{ truncate(page.title, 80) }}</td>
-                <td>{{ userFullName(page.user) }}</td>
+                <td>{{ userFullName(page.created_by) }}</td>
                 <td>{{ page.updated_at | date('Y-m-d H:i') }}</td>
                 <td>
                     <div style="white-space: nowrap">
