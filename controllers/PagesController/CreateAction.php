@@ -51,10 +51,11 @@ class ManiplePages_PagesController_CreateAction
             /** @var ManiplePages_Model_DbTable_Pages $pagesTable */
             $pagesTable = $this->_db->getTable(ManiplePages_Model_DbTable_Pages::className);
             $page = $pagesTable->createRow(array(
-                'page_type'  => 'page',
-                'created_at' => time(),
-                'updated_at' => time(),
-                'slug'       => $slug,
+                'page_type'    => 'page',
+                'created_at'   => time(),
+                'updated_at'   => time(),
+                'published_at' => time(),
+                'slug'         => $slug,
             ));
             $page->save();
 
