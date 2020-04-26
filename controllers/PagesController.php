@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @property Zend_View_Abstract|Zefram_View_Interface $view
+ * @property Zend_View_Abstract|Zefram_View_Abstract $view
  * @property Zend_Controller_Request_Http $_request
  */
 class ManiplePages_PagesController extends Maniple_Controller_Action

@@ -34,7 +34,7 @@ class ManiplePages_PagesController_EditAction
             throw new Maniple_Controller_Exception_AuthenticationRequired($this->_request);
         }
         if (!$this->_securityContext->isAllowed('manage_pages')) {
-            throw new Maniple_Controller_Exception_NotAllowed();
+            throw new Maniple_Controller_Exception_Forbidden();
         }
 
         $pageId = (int) $this->getScalarParam('page_id');

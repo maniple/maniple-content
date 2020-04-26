@@ -29,7 +29,7 @@ class ManiplePages_PagesController_CreateAction
             throw new Maniple_Controller_Exception_AuthenticationRequired($this->_request);
         }
         if (!$this->_securityContext->isAllowed('manage_pages')) {
-            throw new Maniple_Controller_Exception_NotAllowed();
+            throw new Maniple_Controller_Exception_Forbidden();
         }
 
         $this->_form = new ManiplePages_Form_Page(array(
