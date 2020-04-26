@@ -1,6 +1,7 @@
 <?php
 
 class ManiplePages_Bootstrap extends Maniple_Application_Module_Bootstrap
+    implements Maniple_Menu_MenuManagerProviderInterface
 {
     public function getModuleDependencies()
     {
@@ -32,6 +33,8 @@ class ManiplePages_Bootstrap extends Maniple_Application_Module_Bootstrap
             'helperPaths' => array(
                 'ManiplePages_View_Helper_' => __DIR__ . '/library/ManiplePages/View/Helper/',
             ),
+            'scriptPathSpec' => ':module/:controller/:action.:suffix',
+            'suffix' => 'twig',
         );
     }
 
@@ -44,21 +47,19 @@ class ManiplePages_Bootstrap extends Maniple_Application_Module_Bootstrap
         );
     }
 
-    /**
-     * Setup view path spec
-     */
-    protected function _initViewRenderer()
-    {
-        /** @var Zefram_Controller_Action_Helper_ViewRenderer $viewRenderer */
-        $viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('ViewRenderer');
-        $viewRenderer->setViewScriptPathSpec(':module/:controller/:action.:suffix', 'maniple-pages');
-        $viewRenderer->setViewSuffix('twig', 'maniple-pages');
-    }
-
     protected function _initFrontController()
     {
         /** @var Zend_Controller_Front $frontController */
         $frontController = $this->getApplication()->bootstrap('FrontController')->getResource('FrontController');
         $frontController->registerPlugin(new ManiplePages_Controller_Plugin_PageResolver());
+    }
+
+    public function getMenuManagerConfig()
+    {
+        return array(
+            'builders' => array(
+                ManiplePages_Menu_MenuBuilder::className,
+            ),
+        );
     }
 }

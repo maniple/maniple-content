@@ -19,4 +19,6 @@ return array(
     'Author' => 'Autor',
     'Modified' => 'Czas modyfikacji',
     'Page has been successfully created' => 'Strona utworzona pomyślnie',
+
+    'All pages' => 'Strony',
 );
