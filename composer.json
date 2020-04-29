@@ -5,6 +5,7 @@
     "license": "proprietary",
     "require": {
         "maniple/maniple": "*",
+        "maniple/maniple-editor": "*",
         "maniple/maniple-user": "*",
         "xemlock/zend1-composer-installer": "^0.1.0"
     },
@@ -26,6 +27,10 @@
         {
             "type": "git",
             "url": "https://github.com/maniple/maniple"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/maniple/maniple-editor"
         },
         {
             "type": "git",

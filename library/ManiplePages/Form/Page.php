@@ -22,13 +22,6 @@ class ManiplePages_Form_Page extends Zefram_Form2
         }
         unset($options['dbAdapter']);
 
-        $options['prefixPath'] = array(
-            array(
-                'prefix' => 'DokoEvent_Form_',
-                'path'   => __DIR__ . '/../../../../doko-event/library/DokoEvent/Form/',
-            ),
-        );
-
         $options['decorators'] = array(
             array('ViewScript', array(
                 'viewScript' =>'maniple-pages/form/page.twig',
@@ -51,7 +44,7 @@ class ManiplePages_Form_Page extends Zefram_Form2
                 ),
             ),
             'body' => array(
-                'type' => 'richText',
+                'type' => 'editor',
                 'options' => array(
                     'required' => false,
                     'label' => 'Page body',
