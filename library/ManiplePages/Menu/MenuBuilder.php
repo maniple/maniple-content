@@ -28,19 +28,13 @@ class ManiplePages_Menu_MenuBuilder implements Maniple_Menu_MenuBuilderInterface
 
         $menu->addPage(array(
             'label' => 'Pages',
-            'uri'   => '',
-            'pages' => array(
-                array(
-                    'label' => 'New page',
-                    'route' => 'maniple-pages.pages.create',
-                    'type'  => 'mvc',
-                ),
-                array(
-                    'label' => 'All pages',
-                    'route' => 'maniple-pages.pages.index',
-                    'type'  => 'mvc',
-                ),
-            ),
+            'route' => 'maniple-pages.pages.index',
+            'type'  => 'mvc',
+        ));
+        $menu->addPage(array(
+            'label' => 'New page',
+            'route' => 'maniple-pages.pages.create',
+            'type'  => 'mvc',
         ));
     }
 }
