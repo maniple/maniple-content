@@ -43,8 +43,12 @@ class ManiplePages_PagesController extends Maniple_Controller_Action
 
     public function viewAction()
     {
-        $pageId = (int) $this->getScalarParam('page_id');
-        $page = $this->_pageRepository->getPageOfType('page', $pageId);
+        $page = $this->getParam('page');
+
+        if (!$page instanceof ManiplePages_Model_Page) {
+            $pageId = (int) $this->getScalarParam('page_id');
+            $page = $this->_pageRepository->getPageOfType('page', $pageId);
+        }
 
         if (!$page) {
             throw new Maniple_Controller_Exception_NotFound($this->view->translate('Page not found'));

@@ -21,4 +21,5 @@ return array(
     'Page has been successfully created' => 'Strona utworzona pomyślnie',
 
     'All pages' => 'Strony',
+    'Page' => 'Strona',
 );

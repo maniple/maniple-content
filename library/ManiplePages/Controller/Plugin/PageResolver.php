@@ -6,6 +6,8 @@
  */
 class ManiplePages_Controller_Plugin_PageResolver extends Zend_Controller_Plugin_Abstract
 {
+    const className = __CLASS__;
+
     const REDIRECT_ROUTE = 'maniple-pages.pages.view';
 
     /**
@@ -17,6 +19,11 @@ class ManiplePages_Controller_Plugin_PageResolver extends Zend_Controller_Plugin
      * @var int
      */
     protected $_exceptionCount;
+
+    /**
+     * @var ManiplePages_Model_Page|null
+     */
+    protected $_resolvedPage;
 
     public function routeStartup(Zend_Controller_Request_Abstract $request)
     {
@@ -68,6 +75,9 @@ class ManiplePages_Controller_Plugin_PageResolver extends Zend_Controller_Plugin
             $slug = trim(strtok($requestUri, '?'), '/');
             $page = $pageRepository->getPageBySlug($slug);
 
+            $request->setParam('page', $page);
+            $this->_resolvedPage = $page;
+
             if ($page) {
                 // during routeStartup/routeShutdown routing depends on requestUri
                 // rather on request's module/controller/action params
@@ -92,5 +102,13 @@ class ManiplePages_Controller_Plugin_PageResolver extends Zend_Controller_Plugin
         if ($frontController->throwExceptions() && $exceptionThrown) {
             throw end($exceptions);
         }
+    }
+
+    /**
+     * @return ManiplePages_Model_Page|null
+     */
+    public function getResolvedPage()
+    {
+        return $this->_resolvedPage;
     }
 }
